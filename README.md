@@ -104,11 +104,22 @@ This is v0.1 and is not on the Chrome Web Store yet. To try it:
 4. Click **Load unpacked** and select the unzipped folder.
 5. Open any Jira issue and click the extension icon to open the side panel.
 
-<!-- 如果需要填 API key，把下面这段留着并改成实际步骤；不需要就整段删掉
-### API key
+### AI analysis (optional)
 
-The analysis runs through [填模型服务商]. Before first use, open the extension's Settings and paste your own API key. The key is stored locally in your browser and is never sent anywhere except to the model provider.
--->
+**Run Free Local Check** runs entirely in your browser. No API key, no API cost.
+
+To turn on **AI Deep Analysis**, open the extension's Settings and add your own key:
+
+- **Provider** — DeepSeek, Doubao (Volcano Ark), OpenAI, or any OpenAI-compatible endpoint
+- **Model** — whichever model your provider offers
+- **API key** — your own
+
+A few things worth knowing:
+
+- API cost is billed to your own provider account. This extension does not resell API access, and your company does not need to purchase or deploy anything.
+- Nothing is sent until you click **AI Deep Analysis**. At that point the Jira summary, description, industry, module and the related local findings go directly from your browser to the provider you chose.
+- The key is stored in your own browser. Leave "remember on this machine" unticked and it is kept for the session only. There is a Clear key button.
+- Please check your own company's data policy before using it on real tickets.
 
 ---
 
