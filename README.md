@@ -84,7 +84,6 @@ These are not missing features — they are decisions. Each one needs project co
 - Saving industry / module presets per project
 - Exporting the clarification questions in a format you can paste straight into an email
 
-<!-- 改成你自己真正想做的三条，删掉不打算做的 -->
 
 ---
 
