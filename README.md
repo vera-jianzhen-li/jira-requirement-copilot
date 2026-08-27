@@ -32,7 +32,7 @@ Open a Jira issue → open the side panel → pick your industry and module → 
 | **Gaps & Impact** | Missing rules, ambiguities, context dependencies, potential impact |
 | **Questions to Clarify** | The analysis turned into questions you can send the client, sorted by priority |
 
-If the extension cannot read the Jira page, you can paste the Summary and Description manually.
+**Two modes.** The local checklist runs entirely in your browser — no ticket text leaves your machine. AI analysis is optional, and adds the plain-language explanation, the translation, and the reasoning behind each gap. The local findings are passed to the AI as input, not replaced by it.If the extension cannot read the Jira page, you can paste the Summary and Description manually.
 
 ![Gaps and impact](docs/screenshot-2.png)
 
@@ -123,7 +123,9 @@ Open an [issue](../../issues), or reach me on LinkedIn.
 
 ## A note on data
 
-Analysis is sent to a language model provider for processing. Do not paste requirements containing real customer data, and check your own company's policy before using it on client tickets. The screenshots in this repository use test data I created myself.
+The local checklist runs entirely in your browser. Nothing is sent anywhere.
+
+If you turn on AI analysis, the ticket text is sent to a language model provider for processing. Do not paste requirements containing real customer data, and check your own company's policy before using it on client tickets. The screenshots in this repository use test data I created myself.
 
 ---
 
