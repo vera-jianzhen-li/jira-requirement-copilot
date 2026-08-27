@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jira Requirement Copilot 设置</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <main class="settings-shell">
+    <header>
+      <div class="brand-mark">JC</div>
+      <div>
+        <h1>Jira Requirement Copilot</h1>
+        <p>免费本地检查与可选 AI 设置</p>
+      </div>
+    </header>
+
+    <section class="settings-card hero-card">
+      <h2>默认免费使用，不要求 API Key</h2>
+      <p>内置的本地保险清单会直接在浏览器中检查需求，不上传 Jira 内容，也不产生 API 费用。只有你主动点击“AI Deep Analysis”时，才会使用下面配置的个人 API。</p>
+    </section>
+
+    <section class="settings-card">
+      <h2>可选 AI 深度分析</h2>
+      <p class="section-copy">这部分不是使用插件的必填项。需要翻译、语义解释或更深入的动态分析时，可以配置 DeepSeek、豆包、OpenAI 或兼容接口。</p>
+
+      <div class="field-grid">
+        <label>
+          <span>模型供应商</span>
+          <select id="provider">
+            <option value="deepseek">DeepSeek（推荐低成本）</option>
+            <option value="doubao">豆包 / 火山方舟</option>
+            <option value="openai">OpenAI</option>
+            <option value="custom">其他 OpenAI 兼容接口</option>
+          </select>
+        </label>
+
+        <label>
+          <span>模型名称</span>
+          <input id="model" type="text" spellcheck="false" autocomplete="off">
+        </label>
+      </div>
+
+      <label>
+        <span>API Key</span>
+        <div class="password-row">
+          <input id="apiKey" type="password" spellcheck="false" autocomplete="new-password" placeholder="粘贴你自己申请的 API Key">
+          <button class="button secondary compact" id="toggleKeyButton" type="button">显示</button>
+        </div>
+        <small id="keyStatus">尚未保存 API Key</small>
+      </label>
+
+      <label class="check-label">
+        <input id="rememberKey" type="checkbox">
+        <span>
+          <b>记住在本机</b>
+          <small>不勾选时，Key 仅在本次浏览器会话中保留，关闭浏览器后清除。</small>
+        </span>
+      </label>
+      <div class="security-warning">浏览器扩展存储不是系统级加密保险箱。只有在个人可信电脑上，才建议勾选“记住在本机”。</div>
+
+      <details>
+        <summary>高级 API 设置</summary>
+        <div class="advanced-fields">
+          <label>
+            <span>API Base URL</span>
+            <input id="baseUrl" type="url" spellcheck="false" autocomplete="off">
+          </label>
+          <label>
+            <span>API 模式</span>
+            <select id="apiMode">
+              <option value="responses">Responses API</option>
+              <option value="chat_completions">Chat Completions API</option>
+            </select>
+          </label>
+        </div>
+      </details>
+
+      <div class="actions split-actions">
+        <button class="button danger" id="clearKeyButton" type="button">清除 Key</button>
+        <div>
+          <button class="button secondary" id="testButton" type="button">测试连接</button>
+          <button class="button primary" id="saveButton" type="button">保存设置</button>
+        </div>
+      </div>
+      <div class="status hidden" id="status" role="status"></div>
+    </section>
+
+    <section class="settings-card info-card">
+      <h2>费用与数据说明</h2>
+      <ul>
+        <li>“Run Free Local Check”完全在浏览器本地运行，不需要 API Key，也没有 API 费用。</li>
+        <li>API 费用由你的个人 DeepSeek、豆包、OpenAI 或其他供应商账户支付。</li>
+        <li>插件本身不会代收 API 费用，也不需要公司采购或部署。</li>
+        <li>只有主动点击“AI Deep Analysis”后，Jira Summary、Description、Industry、Module 和相关本地检查项才会直接发送到所选供应商。</li>
+        <li>使用前请自行确认 Jira 内容符合所在公司的数据安全规定。</li>
+      </ul>
+    </section>
+  </main>
+  <script src="analysis-client.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

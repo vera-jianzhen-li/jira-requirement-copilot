@@ -1,0 +1,43 @@
+{
+  "manifest_version": 3,
+  "name": "Jira Requirement Copilot",
+  "version": "0.1.0",
+  "minimum_chrome_version": "114",
+  "description": "Review Jira requirements with a free local insurance checklist and optional personal AI.",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "sidePanel",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://*.atlassian.net/*",
+    "https://api.deepseek.com/*",
+    "https://ark.cn-beijing.volces.com/*",
+    "https://api.openai.com/*"
+  ],
+  "optional_host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "Open Jira Requirement Copilot",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png"
+    }
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "options_page": "options.html"
+}

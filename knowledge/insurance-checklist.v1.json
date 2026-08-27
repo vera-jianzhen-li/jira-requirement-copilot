@@ -1,0 +1,391 @@
+{
+  "version": "1.0.0",
+  "purpose": "Use public insurance-domain knowledge to identify review dimensions and generate hypotheses or clarification questions without asserting undocumented client rules.",
+  "usagePolicy": {
+    "assertionMode": "hypothesis_only",
+    "maxSelectedChecks": 30,
+    "confidentiality": "Contains only public-domain abstractions and original generic review questions. Do not add client names, fields, thresholds, workflows, rating logic, or proprietary documents."
+  },
+  "sources": [
+    {
+      "id": "IIBA-BAS",
+      "title": "The Business Analysis Standard",
+      "publisher": "International Institute of Business Analysis",
+      "url": "https://www.iiba.org/knowledgehub/the-business-analysis-standard/",
+      "usageNote": "Used for original abstractions of requirement verification, validation, stakeholder, context, scope, and traceability dimensions."
+    },
+    {
+      "id": "ACORD-PC",
+      "title": "Property & Casualty Data Standards",
+      "publisher": "ACORD",
+      "url": "https://www-dev.acord.org/standards-architecture/acord-data-standards/Property_Casualty_Data_Standards",
+      "usageNote": "Uses only publicly listed business-case and transaction taxonomy. Does not reproduce licensed schemas, messages, fields, or specification text."
+    },
+    {
+      "id": "GW-PRODUCT",
+      "title": "Cloud API products and lines of business",
+      "publisher": "Guidewire",
+      "url": "https://docs.guidewire.com/cloud/is/202607/cloudapica/cloudAPI/LOBEndpoints/generating-LOB-endpoints/c_products_and_lines_of_business.html",
+      "usageNote": "Used as a non-universal example of product, line of business, coverable, coverage, and product-model capabilities."
+    },
+    {
+      "id": "GW-TRANSACTION",
+      "title": "Overview of policy transaction management",
+      "publisher": "Guidewire",
+      "url": "https://docs.guidewire.com/cloud/is/202603/cloudapibf/cloudAPI/PolicyCenter/job-types/overview-of-policy-transaction-management.html",
+      "usageNote": "Used to identify common transaction stages such as initiate, modify, quote, bind, issue, withdraw, and cancel."
+    },
+    {
+      "id": "GW-QUOTE",
+      "title": "Submissions",
+      "publisher": "Guidewire",
+      "url": "https://docs.guidewire.com/cloud/pc/202411/cloudapibf/cloudAPI/topics/122-PCjobTypes/01-submissions/c_submissions.html",
+      "usageNote": "Used to identify generic quote input, risk information, re-draft, rating, multi-version, and override review dimensions."
+    },
+    {
+      "id": "GW-PARTY",
+      "title": "Overview of policy contacts",
+      "publisher": "Guidewire",
+      "url": "https://docs.guidewire.com/cloud/is/202603/cloudapibf/cloudAPI/PolicyCenter/job-policies/policy-contacts/c_overview_of_policy_contacts.html",
+      "usageNote": "Used to identify generic account contacts, policy contacts, contextual roles, and line-of-business-specific roles."
+    },
+    {
+      "id": "GW-RENEWAL",
+      "title": "Initiating a renewal",
+      "publisher": "Guidewire",
+      "url": "https://docs.guidewire.com/cloud/is/202603/cloudapibf/cloudAPI/PolicyCenter/job-types/renewals/c_initiating_a_renewal.html",
+      "usageNote": "Used to identify generic automated and manual renewal, change, requote, underwriting, and pre-renewal review dimensions."
+    },
+    {
+      "id": "GW-OOS",
+      "title": "Out-of-sequence conflicts",
+      "publisher": "Guidewire",
+      "url": "https://docs.guidewire.com/cloud/is/202603/cloudapibf/cloudAPI/PolicyCenter/job-support/OOS-conflicts.html",
+      "usageNote": "Used to identify effective-dated concurrency and out-of-sequence policy-change risks."
+    },
+    {
+      "id": "GW-UW",
+      "title": "Underwriting issues in PolicyCenter",
+      "publisher": "Guidewire",
+      "url": "https://docs.guidewire.com/cloud/pc/202511/cloudapibf/cloudAPI/topics/124-PCsupport/00-underwriting-issues/c_underwriting_issues_in_policycenter.html",
+      "usageNote": "Used to identify generic referral, blocking point, approval, lock, and renewal-referral review dimensions."
+    },
+    {
+      "id": "GW-PRODUCER",
+      "title": "Producers",
+      "publisher": "Guidewire",
+      "url": "https://docs.guidewire.com/cloud/is/202603/cloudapibf/cloudAPI/PolicyCenter/framework/producers.html",
+      "usageNote": "Used to identify generic producer organization, producer code, commission plan, and access-scope dimensions."
+    },
+    {
+      "id": "NFRA-INTERNET",
+      "title": "互联网保险业务监管办法",
+      "publisher": "国家金融监督管理总局",
+      "url": "https://www.nfra.gov.cn/cn/view/pages/rulesDetail.html?docId=949137",
+      "usageNote": "Used only as a China-jurisdiction example for end-to-end service, traceability, consumer protection, and process-control review; applicability must be confirmed."
+    },
+    {
+      "id": "IAIS-ICP19",
+      "title": "Insurance Core Principle 19: Conduct of Business",
+      "publisher": "International Association of Insurance Supervisors",
+      "url": "https://www.iaisweb.org/uploads/2022/01/171102-Revised-ICP-19-adopted.pdf",
+      "usageNote": "Used for high-level fair-treatment, intermediary, disclosure, and conduct-of-business review dimensions; not used as detailed system rules."
+    }
+  ],
+  "modules": [
+    {
+      "id": "CORE",
+      "nameZh": "通用需求完整性",
+      "nameEn": "Core Requirement Completeness",
+      "description": "所有需求默认执行的事实、范围、状态、异常和验收完整性检查。",
+      "selection": "always",
+      "keywords": ["requirement", "需求", "scope", "范围", "actor", "角色", "rule", "规则", "acceptance criteria", "验收标准"],
+      "checks": [
+        {"id":"CORE-001","dimension":"Business objective","checkZh":"是否说明要解决的业务问题、目标结果和成功标准？","clientQuestionEn":"What business problem and measurable outcome should this requirement achieve?","priority":"high","outputTypes":["missing_rule","clarification_question"],"sourceRefs":["IIBA-BAS"]},
+        {"id":"CORE-002","dimension":"Actors and stakeholders","checkZh":"是否明确发起者、操作人、审批人、受影响方和结果接收方？","clientQuestionEn":"Which actors initiate, perform, approve, and receive the outcome of this process?","priority":"high","outputTypes":["missing_rule","clarification_question"],"sourceRefs":["IIBA-BAS"]},
+        {"id":"CORE-003","dimension":"Current and expected behaviour","checkZh":"是否同时说明当前行为、期望行为以及需要保持不变的行为？","clientQuestionEn":"What is the current behaviour, what should change, and what must remain unchanged?","priority":"high","outputTypes":["missing_rule","ambiguity","clarification_question"],"sourceRefs":["IIBA-BAS"]},
+        {"id":"CORE-004","dimension":"Preconditions","checkZh":"是否明确执行前需要满足的状态、数据、权限和时间条件？","clientQuestionEn":"What status, data, permissions, and timing conditions must be satisfied before this action is allowed?","priority":"high","outputTypes":["missing_rule","clarification_question"],"sourceRefs":["IIBA-BAS"]},
+        {"id":"CORE-005","dimension":"Transaction scope","checkZh":"是否明确适用和不适用的交易类型，例如新保、续保、批改、撤单和复效？","clientQuestionEn":"Which transaction types are in scope and out of scope, such as New Business, Renewal, Policy Change, Cancellation, and Reinstatement?","priority":"high","outputTypes":["ambiguity","potential_impact","clarification_question"],"sourceRefs":["ACORD-PC","GW-TRANSACTION"]},
+        {"id":"CORE-006","dimension":"Product and jurisdiction scope","checkZh":"是否明确险种、产品、渠道、客户类型和司法辖区范围？","clientQuestionEn":"Which products, lines of business, channels, customer segments, and jurisdictions are in scope?","priority":"high","outputTypes":["ambiguity","dependency","clarification_question"],"sourceRefs":["GW-PRODUCT","IAIS-ICP19"]},
+        {"id":"CORE-007","dimension":"State transitions","checkZh":"是否定义允许的起始状态、成功状态、拒绝状态、撤回状态及不可逆动作？","clientQuestionEn":"What are the allowed starting states, resulting states, rejection states, withdrawal states, and irreversible actions?","priority":"high","outputTypes":["missing_rule","ambiguity","clarification_question"],"sourceRefs":["GW-TRANSACTION"]},
+        {"id":"CORE-008","dimension":"Exceptions and failures","checkZh":"是否覆盖校验失败、外部服务失败、超时、重复请求、部分成功和人工接管？","clientQuestionEn":"What should happen for validation failures, external-service failures, timeouts, duplicate requests, partial success, and manual intervention?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["IIBA-BAS"]},
+        {"id":"CORE-009","dimension":"Acceptance criteria","checkZh":"是否存在可验证的正常、边界、异常、权限和数据一致性验收条件？","clientQuestionEn":"What testable acceptance criteria cover the happy path, boundaries, exceptions, permissions, and data consistency?","priority":"high","outputTypes":["missing_rule","clarification_question"],"sourceRefs":["IIBA-BAS"]},
+        {"id":"CORE-010","dimension":"Non-functional requirements","checkZh":"是否明确性能、容量、可用性、可访问性、可追溯性和数据留存要求？","clientQuestionEn":"What performance, volume, availability, accessibility, traceability, and retention requirements apply?","priority":"medium","outputTypes":["missing_rule","potential_impact","clarification_question"],"sourceRefs":["IIBA-BAS"]}
+      ]
+    },
+    {
+      "id": "PRODUCT_FACTORY",
+      "nameZh": "产品工厂",
+      "nameEn": "Product Factory",
+      "description": "保险产品、险种、保障、风险对象、责任条款、版本和可用性配置。",
+      "selection": "conditional",
+      "keywords": ["product", "产品", "LOB", "险种", "coverage", "保障", "limit", "限额", "deductible", "免赔额", "product factory", "产品工厂"],
+      "checks": [
+        {"id":"PROD-001","dimension":"Product and LOB structure","checkZh":"是否明确产品、险种以及单险种或组合险产品结构？","clientQuestionEn":"Which product and lines of business are affected, and is the product mono-line or multi-line?","priority":"high","outputTypes":["ambiguity","dependency","clarification_question"],"sourceRefs":["GW-PRODUCT"]},
+        {"id":"PROD-002","dimension":"Product version and effective date","checkZh":"是否明确配置版本、生效日期、失效日期以及存量保单适用方式？","clientQuestionEn":"Which product version and effective dates apply, and how should existing policies be treated?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["GW-PRODUCT"]},
+        {"id":"PROD-003","dimension":"Coverage availability","checkZh":"是否定义保障责任在产品、司法辖区、渠道、客户和风险条件下的可用性？","clientQuestionEn":"Under which product, jurisdiction, channel, customer, and risk conditions is the coverage available?","priority":"high","outputTypes":["missing_rule","ambiguity","clarification_question"],"sourceRefs":["GW-PRODUCT"]},
+        {"id":"PROD-004","dimension":"Required and optional coverages","checkZh":"是否区分必选、默认、建议、可选和互斥保障？","clientQuestionEn":"Which coverages are required, defaulted, suggested, optional, or mutually exclusive?","priority":"high","outputTypes":["missing_rule","clarification_question"],"sourceRefs":["GW-PRODUCT"]},
+        {"id":"PROD-005","dimension":"Terms limits and deductibles","checkZh":"是否明确责任限额、免赔额、选项值、默认值、币种和组合限制？","clientQuestionEn":"What limits, deductibles, option values, defaults, currencies, and combination constraints apply?","priority":"high","outputTypes":["missing_rule","ambiguity","clarification_question"],"sourceRefs":["GW-PRODUCT"]},
+        {"id":"PROD-006","dimension":"Risk objects and attributes","checkZh":"是否明确风险对象、层级关系、必填属性、数量限制和数据校验？","clientQuestionEn":"Which risk objects and attributes are required, how are they related, and what validation or cardinality rules apply?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["GW-PRODUCT"]},
+        {"id":"PROD-007","dimension":"Eligibility and underwriting dependency","checkZh":"产品配置是否依赖资格规则、核保规则、问题集或外部数据？","clientQuestionEn":"Which eligibility rules, underwriting rules, question sets, or external data determine product availability?","priority":"high","outputTypes":["dependency","potential_impact","clarification_question"],"sourceRefs":["GW-PRODUCT","GW-UW"]},
+        {"id":"PROD-008","dimension":"Rating dependency","checkZh":"产品变化是否需要同步费率表、因子、折扣、附加费或税费配置？","clientQuestionEn":"Does this product change require updates to rates, factors, discounts, surcharges, fees, or taxes?","priority":"high","outputTypes":["dependency","potential_impact","clarification_question"],"sourceRefs":["GW-QUOTE"]},
+        {"id":"PROD-009","dimension":"Forms and documents","checkZh":"是否定义产品、保障和交易阶段与条款、批单及客户文件的映射？","clientQuestionEn":"Which policy forms, endorsements, clauses, and customer documents are associated with this product configuration and transaction stage?","priority":"medium","outputTypes":["dependency","potential_impact","clarification_question"],"sourceRefs":["GW-PRODUCT"]},
+        {"id":"PROD-010","dimension":"Migration and compatibility","checkZh":"产品版本变化是否影响在途报价、存量保单、续保、批改和历史可重现性？","clientQuestionEn":"How should the change affect in-flight quotes, existing policies, renewals, endorsements, and historical reproducibility?","priority":"high","outputTypes":["dependency","potential_impact","clarification_question"],"sourceRefs":["GW-PRODUCT","GW-TRANSACTION"]}
+      ]
+    },
+    {
+      "id": "PARTY",
+      "nameZh": "Party / 干系人管理",
+      "nameEn": "Party and Stakeholder Management",
+      "description": "个人、组织、账户、保单联系人、角色、关系、标识和隐私。",
+      "selection": "conditional",
+      "keywords": ["party", "contact", "account", "customer", "insured", "broker", "producer", "干系人", "联系人", "客户", "被保险人", "经纪人"],
+      "checks": [
+        {"id":"PARTY-001","dimension":"Party type","checkZh":"是否明确参与方是个人、组织、内部用户、中介机构或其他实体？","clientQuestionEn":"Which party types are supported, such as person, organisation, internal user, or intermediary?","priority":"high","outputTypes":["ambiguity","clarification_question"],"sourceRefs":["GW-PARTY"]},
+        {"id":"PARTY-002","dimension":"Contextual roles","checkZh":"是否明确同一参与方在账户、报价、保单和险种层面的不同角色？","clientQuestionEn":"Which roles can the same party hold at account, quote, policy, and line-of-business level?","priority":"high","outputTypes":["missing_rule","ambiguity","clarification_question"],"sourceRefs":["GW-PARTY"]},
+        {"id":"PARTY-003","dimension":"Mandatory parties","checkZh":"是否明确主被保险人、附加被保险人、投保人、付款人、受益人、经纪人等必需角色？","clientQuestionEn":"Which party roles are mandatory, such as primary insured, additional insured, applicant, payer, beneficiary, or producer?","priority":"high","outputTypes":["missing_rule","clarification_question"],"sourceRefs":["GW-PARTY"]},
+        {"id":"PARTY-004","dimension":"Identity and deduplication","checkZh":"是否说明参与方的唯一标识、匹配、去重、合并和误合并恢复规则？","clientQuestionEn":"How are parties uniquely identified, matched, deduplicated, merged, and restored after an incorrect merge?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["GW-PARTY"]},
+        {"id":"PARTY-005","dimension":"Relationship and ownership","checkZh":"是否定义个人与组织、账户、保单及其他参与方之间的关系和关系有效期？","clientQuestionEn":"What relationships connect parties to organisations, accounts, policies, and other parties, and are those relationships effective-dated?","priority":"medium","outputTypes":["missing_rule","clarification_question"],"sourceRefs":["GW-PARTY"]},
+        {"id":"PARTY-006","dimension":"Contact and address change","checkZh":"地址和联系方式变更是全局更新、仅当前账户更新还是保单快照更新？","clientQuestionEn":"Should an address or contact change update the master party, the current account, the policy snapshot, or selected records only?","priority":"high","outputTypes":["ambiguity","potential_impact","clarification_question"],"sourceRefs":["GW-PARTY"]},
+        {"id":"PARTY-007","dimension":"Role effective dates","checkZh":"角色新增、变更和终止是否需要生效日期、审批和历史记录？","clientQuestionEn":"Do party-role additions, changes, and removals require effective dates, approval, and history?","priority":"medium","outputTypes":["missing_rule","clarification_question"],"sourceRefs":["GW-PARTY"]},
+        {"id":"PARTY-008","dimension":"Privacy and consent","checkZh":"是否明确个人信息用途、授权、可见范围、脱敏、删除和留存要求？","clientQuestionEn":"What consent, purpose limitation, visibility, masking, deletion, and retention rules apply to personal data?","priority":"high","outputTypes":["missing_rule","dependency","potential_impact","clarification_question"],"sourceRefs":["IAIS-ICP19","NFRA-INTERNET"]},
+        {"id":"PARTY-009","dimension":"External identifiers","checkZh":"是否明确客户、经纪人、供应商和主数据系统标识的来源及映射？","clientQuestionEn":"Which systems own party identifiers and how are customer, producer, vendor, and master-data identifiers mapped?","priority":"medium","outputTypes":["dependency","clarification_question"],"sourceRefs":["GW-PARTY"]},
+        {"id":"PARTY-010","dimension":"Producer access","checkZh":"经纪人或代理人可查看和操作哪些账户、报价、保单和交易？","clientQuestionEn":"Which accounts, quotes, policies, and transactions may each producer or intermediary view and operate?","priority":"high","outputTypes":["missing_rule","potential_impact","clarification_question"],"sourceRefs":["GW-PRODUCER"]}
+      ]
+    },
+    {
+      "id": "AGREEMENT",
+      "nameZh": "Agreement / 协议管理",
+      "nameEn": "Agreement Management",
+      "description": "保险人与经纪人、代理人、合作方或其他主体之间的协议、授权和商业条件。",
+      "selection": "conditional",
+      "keywords": ["agreement", "contract", "binder", "binding authority", "commission", "协议", "合同", "授权", "佣金"],
+      "checks": [
+        {"id":"AGR-001","dimension":"Agreement type","checkZh":"是否明确协议类型及其业务目的，例如代理、经纪、授权承保、佣金或服务协议？","clientQuestionEn":"What type of agreement is involved, such as agency, brokerage, binding authority, commission, or service agreement?","priority":"high","outputTypes":["ambiguity","clarification_question"],"sourceRefs":["ACORD-PC","GW-PRODUCER"]},
+        {"id":"AGR-002","dimension":"Agreement parties and roles","checkZh":"是否明确协议各方、签约角色、责任主体和联系人？","clientQuestionEn":"Who are the agreement parties, signatory roles, accountable owners, and operational contacts?","priority":"high","outputTypes":["missing_rule","clarification_question"],"sourceRefs":["GW-PARTY"]},
+        {"id":"AGR-003","dimension":"Scope of authority","checkZh":"是否明确可报价、承保、签发、批改、取消或处理理赔的授权范围？","clientQuestionEn":"What authority does the agreement grant for quoting, underwriting, binding, issuing, endorsing, cancelling, or handling claims?","priority":"high","outputTypes":["missing_rule","potential_impact","clarification_question"],"sourceRefs":["ACORD-PC"]},
+        {"id":"AGR-004","dimension":"Product territory and channel scope","checkZh":"是否明确协议适用的产品、险种、地区、渠道、客户群和币种？","clientQuestionEn":"Which products, lines of business, territories, channels, customer segments, and currencies are covered by the agreement?","priority":"high","outputTypes":["ambiguity","clarification_question"],"sourceRefs":["ACORD-PC","GW-PRODUCER"]},
+        {"id":"AGR-005","dimension":"Validity and versioning","checkZh":"是否明确协议生效、到期、续签、版本替换及存量业务处理？","clientQuestionEn":"What are the agreement effective, expiry, renewal, and supersession rules, and how are existing policies treated?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["ACORD-PC"]},
+        {"id":"AGR-006","dimension":"Financial terms","checkZh":"是否明确佣金、费用、税费、分层比例、覆盖范围和人工调整权限？","clientQuestionEn":"What commission, fee, tax, tier, scope, and manual-adjustment terms apply?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["GW-PRODUCER"]},
+        {"id":"AGR-007","dimension":"Limits and referral","checkZh":"是否明确保额、保费、风险等级等授权阈值及超限后的转人工流程？","clientQuestionEn":"What authority limits apply and what referral process is required when a limit is exceeded?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["ACORD-PC","GW-UW"]},
+        {"id":"AGR-008","dimension":"Suspension and termination","checkZh":"协议暂停、终止或失效后，在途报价、保单服务、续保和佣金如何处理？","clientQuestionEn":"What happens to in-flight quotes, policy servicing, renewals, and commission when an agreement is suspended, terminated, or expires?","priority":"high","outputTypes":["missing_rule","potential_impact","clarification_question"],"sourceRefs":["GW-PRODUCER"]},
+        {"id":"AGR-009","dimension":"Approval and evidence","checkZh":"协议创建、修改、特批和终止是否需要审批、原因、附件和审计记录？","clientQuestionEn":"Which approvals, reasons, documents, and audit evidence are required to create, amend, override, or terminate an agreement?","priority":"medium","outputTypes":["missing_rule","clarification_question"],"sourceRefs":["IIBA-BAS"]},
+        {"id":"AGR-010","dimension":"Conflict and precedence","checkZh":"多个协议、佣金计划或授权范围同时适用时，是否定义优先级和冲突处理？","clientQuestionEn":"How are precedence and conflicts resolved when multiple agreements, commission plans, or authority scopes apply?","priority":"high","outputTypes":["missing_rule","ambiguity","clarification_question"],"sourceRefs":["GW-PRODUCER"]}
+      ]
+    },
+    {
+      "id": "QUOTATION",
+      "nameZh": "Quotation / Submission 管理",
+      "nameEn": "Quotation and Submission Management",
+      "description": "报价或投保申请的创建、补充风险信息、计费、比较、接受、失效和重新报价。",
+      "selection": "conditional",
+      "keywords": ["quote", "quotation", "submission", "报价", "投保", "premium", "保费", "rating", "计费"],
+      "checks": [
+        {"id":"QUOTE-001","dimension":"Transaction applicability","checkZh":"报价能力是否明确适用于新保、续保、批改或其他交易？","clientQuestionEn":"Does this quotation behaviour apply to New Business, Renewal, Policy Change, or other transaction types?","priority":"high","outputTypes":["ambiguity","potential_impact","clarification_question"],"sourceRefs":["ACORD-PC","GW-TRANSACTION"]},
+        {"id":"QUOTE-002","dimension":"Required input","checkZh":"是否明确开始报价和完成报价所需的客户、风险、保障、历史和外部数据？","clientQuestionEn":"Which customer, risk, coverage, history, and external data are required to start and complete a quote?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["GW-QUOTE"]},
+        {"id":"QUOTE-003","dimension":"Quote states","checkZh":"是否定义草稿、可报价、已报价、已接受、已拒绝、已撤回和已失效等状态及转换？","clientQuestionEn":"Which quote states and transitions apply, including draft, quotable, quoted, accepted, declined, withdrawn, and expired?","priority":"high","outputTypes":["missing_rule","clarification_question"],"sourceRefs":["GW-TRANSACTION","GW-QUOTE"]},
+        {"id":"QUOTE-004","dimension":"Quote versions","checkZh":"是否允许同一业务存在多个报价版本，如何比较、选择、锁定和作废？","clientQuestionEn":"Can multiple quote versions exist, and how are they compared, selected, locked, superseded, and invalidated?","priority":"high","outputTypes":["missing_rule","ambiguity","clarification_question"],"sourceRefs":["GW-QUOTE"]},
+        {"id":"QUOTE-005","dimension":"Recalculation triggers","checkZh":"是否明确哪些风险、保障、日期、参与方和财务字段变化必须重新计算保费？","clientQuestionEn":"Which changes to risk, coverage, dates, parties, and financial fields must trigger premium recalculation?","priority":"high","outputTypes":["missing_rule","potential_impact","clarification_question"],"sourceRefs":["GW-QUOTE"]},
+        {"id":"QUOTE-006","dimension":"Premium breakdown","checkZh":"是否明确基础保费、折扣、附加费、税费、佣金和总保费的展示及舍入？","clientQuestionEn":"How should base premium, discounts, surcharges, taxes, fees, commission, totals, and rounding be calculated and displayed?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["GW-QUOTE"]},
+        {"id":"QUOTE-007","dimension":"Quote validity","checkZh":"是否明确报价有效期、费率锁定日期、时区以及到期后的重新报价规则？","clientQuestionEn":"What quote-validity, rate-lock, date, timezone, expiry, and requote rules apply?","priority":"high","outputTypes":["missing_rule","clarification_question"],"sourceRefs":["GW-QUOTE"]},
+        {"id":"QUOTE-008","dimension":"Acceptance and re-acceptance","checkZh":"报价接受后哪些修改会使接受失效并要求客户重新接受？","clientQuestionEn":"Which changes after quote acceptance invalidate the acceptance and require the customer or broker to accept again?","priority":"high","outputTypes":["missing_rule","potential_impact","clarification_question"],"sourceRefs":["GW-TRANSACTION"]},
+        {"id":"QUOTE-009","dimension":"Underwriting blocks","checkZh":"核保问题在哪些阶段阻止报价、接受、承保或签发，解除后是否自动继续？","clientQuestionEn":"At which stages do underwriting issues block quoting, acceptance, binding, or issuance, and what happens after resolution?","priority":"high","outputTypes":["dependency","clarification_question"],"sourceRefs":["GW-UW"]},
+        {"id":"QUOTE-010","dimension":"Overrides","checkZh":"费率或保费调整由谁发起、审批，适用范围如何确定，是否需要原因和审计？","clientQuestionEn":"Who may request and approve rating or premium overrides, what scope applies, and what reason and audit evidence are required?","priority":"high","outputTypes":["missing_rule","potential_impact","clarification_question"],"sourceRefs":["GW-QUOTE"]},
+        {"id":"QUOTE-011","dimension":"Concurrency and locking","checkZh":"多人或多个渠道同时修改报价时，如何锁定、检测冲突和保留版本？","clientQuestionEn":"How should concurrent quote edits across users and channels be locked, detected, resolved, and versioned?","priority":"medium","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["GW-QUOTE"]},
+        {"id":"QUOTE-012","dimension":"Failure and retry","checkZh":"计费或外部数据失败时，报价状态、重试、缓存结果和人工处理如何定义？","clientQuestionEn":"What should happen to quote status, retry, cached results, and manual handling when rating or external-data services fail?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["IIBA-BAS"]}
+      ]
+    },
+    {
+      "id": "UNDERWRITING",
+      "nameZh": "Underwriting / 核保",
+      "nameEn": "Underwriting",
+      "description": "核保规则、问题、Referral、权限、审批、阻断点和例外处理。",
+      "selection": "conditional",
+      "keywords": ["underwriting", "underwriter", "referral", "核保", "转人工", "审批", "authority", "权限"],
+      "checks": [
+        {"id":"UW-001","dimension":"Trigger conditions","checkZh":"是否明确哪些数据或变化会触发核保问题、警告或转人工？","clientQuestionEn":"Which data values or changes trigger an underwriting issue, warning, or referral?","priority":"high","outputTypes":["missing_rule","clarification_question"],"sourceRefs":["GW-UW"]},
+        {"id":"UW-002","dimension":"Rule source and version","checkZh":"是否明确核保规则来源、版本、生效日期以及历史交易使用的版本？","clientQuestionEn":"Which underwriting-rule source, version, and effective date apply, including for historical or in-flight transactions?","priority":"high","outputTypes":["dependency","clarification_question"],"sourceRefs":["GW-UW"]},
+        {"id":"UW-003","dimension":"Blocking point","checkZh":"核保问题是提示性还是阻断性，在报价、承保、签发或续保哪个阶段阻断？","clientQuestionEn":"Is each underwriting issue informational or blocking, and at which stage does it block quoting, binding, issuance, or renewal?","priority":"high","outputTypes":["missing_rule","ambiguity","clarification_question"],"sourceRefs":["GW-UW"]},
+        {"id":"UW-004","dimension":"Authority level","checkZh":"是否明确不同保费、保额、风险等级、产品和渠道对应的审批权限？","clientQuestionEn":"Which authority levels apply by premium, limit, risk grade, product, channel, and requested action?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["GW-UW","GW-PRODUCER"]},
+        {"id":"UW-005","dimension":"Referral routing","checkZh":"是否明确转人工对象、队列、分配规则、优先级、SLA和升级路径？","clientQuestionEn":"How are referrals assigned, prioritised, timed, reassigned, and escalated?","priority":"high","outputTypes":["missing_rule","clarification_question"],"sourceRefs":["GW-UW"]},
+        {"id":"UW-006","dimension":"Evidence and documents","checkZh":"核保人员做决定前需要哪些数据、附件、外部查询和解释？","clientQuestionEn":"Which data, documents, external checks, and explanations are required before an underwriting decision?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["GW-UW"]},
+        {"id":"UW-007","dimension":"Decision outcomes","checkZh":"是否定义同意、拒绝、有条件同意、加费、除外和补充资料等结果及后续动作？","clientQuestionEn":"Which decision outcomes are supported, such as approve, decline, approve with conditions, load, exclude, or request more information?","priority":"high","outputTypes":["missing_rule","clarification_question"],"sourceRefs":["GW-UW"]},
+        {"id":"UW-008","dimension":"Re-evaluation after change","checkZh":"风险信息、保障、保费或日期变化后，哪些核保结果必须重新评估或失效？","clientQuestionEn":"Which changes require underwriting rules to be re-evaluated or previous approvals to be invalidated?","priority":"high","outputTypes":["missing_rule","potential_impact","clarification_question"],"sourceRefs":["GW-UW"]},
+        {"id":"UW-009","dimension":"Override and exception","checkZh":"谁可以覆盖核保结果，覆盖范围、有效期、理由和二次审批如何定义？","clientQuestionEn":"Who may override an underwriting outcome, for what scope and duration, and what reason or secondary approval is required?","priority":"high","outputTypes":["missing_rule","clarification_question"],"sourceRefs":["GW-UW"]},
+        {"id":"UW-010","dimension":"Audit and reuse","checkZh":"核保问题、评论、决定和审批是否完整留痕，并在续保或后续交易中复用？","clientQuestionEn":"How are underwriting issues, comments, decisions, and approvals audited and carried into renewal or later transactions?","priority":"medium","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["GW-UW","GW-RENEWAL"]}
+      ]
+    },
+    {
+      "id": "POLICY",
+      "nameZh": "Policy / 保单管理",
+      "nameEn": "Policy Management",
+      "description": "保单承保、签发、期间、状态、快照、服务和历史版本。",
+      "selection": "conditional",
+      "keywords": ["policy", "保单", "bind", "承保", "issue", "签发", "in force", "有效", "policy period", "保单期间"],
+      "checks": [
+        {"id":"POL-001","dimension":"Policy identity","checkZh":"是否明确保单号、保单期间、版本、交易号和外部标识的生成及唯一性？","clientQuestionEn":"How are policy number, policy period, version, transaction identifier, and external identifiers generated and kept unique?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["GW-TRANSACTION"]},
+        {"id":"POL-002","dimension":"Policy lifecycle","checkZh":"是否定义草稿、已报价、已承保、已签发、生效、到期、取消和失效等状态？","clientQuestionEn":"Which policy lifecycle states and transitions are supported from draft through expiry, cancellation, or lapse?","priority":"high","outputTypes":["missing_rule","clarification_question"],"sourceRefs":["GW-TRANSACTION"]},
+        {"id":"POL-003","dimension":"Bind and issue preconditions","checkZh":"承保和签发前必须满足哪些核保、付款、文件、数据和授权条件？","clientQuestionEn":"Which underwriting, payment, document, data, and authority conditions must be met before binding and issuance?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["GW-TRANSACTION","GW-UW"]},
+        {"id":"POL-004","dimension":"Effective dating","checkZh":"是否明确保险期间、交易日期、生效日期、签发日期、时区和日期边界？","clientQuestionEn":"How are policy term, transaction date, effective date, issue date, timezone, and date boundaries defined?","priority":"high","outputTypes":["ambiguity","clarification_question"],"sourceRefs":["GW-TRANSACTION"]},
+        {"id":"POL-005","dimension":"Policy snapshot","checkZh":"签发时哪些产品、参与方、风险、保障、费率和协议数据需要形成不可变快照？","clientQuestionEn":"Which product, party, risk, coverage, rating, and agreement data must be snapshotted at issuance?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["GW-PRODUCT","GW-PARTY"]},
+        {"id":"POL-006","dimension":"Data consistency","checkZh":"是否定义保单层、险种层、风险对象层和参与方层数据的一致性规则？","clientQuestionEn":"What consistency rules apply across policy, line, risk-object, coverage, and party data?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["GW-PRODUCT","GW-PARTY"]},
+        {"id":"POL-007","dimension":"Policy servicing","checkZh":"保单有效期间允许查看、修改、补充、下载或更正哪些信息，由谁操作？","clientQuestionEn":"Which policy information may be viewed, corrected, supplemented, downloaded, or changed in force, and by whom?","priority":"medium","outputTypes":["missing_rule","clarification_question"],"sourceRefs":["GW-TRANSACTION"]},
+        {"id":"POL-008","dimension":"Transaction interactions","checkZh":"保单服务变化是否影响在途批改、续保、取消、复效或理赔？","clientQuestionEn":"How should policy servicing changes interact with in-flight endorsements, renewals, cancellations, reinstatements, or claims?","priority":"high","outputTypes":["dependency","potential_impact","clarification_question"],"sourceRefs":["GW-TRANSACTION","GW-OOS"]},
+        {"id":"POL-009","dimension":"History and reconstruction","checkZh":"能否按任意日期重现当时有效的保单、保障、参与方、保费和文件？","clientQuestionEn":"Must users be able to reconstruct the policy, coverages, parties, premium, and documents as of a historical date?","priority":"medium","outputTypes":["missing_rule","potential_impact","clarification_question"],"sourceRefs":["GW-OOS"]},
+        {"id":"POL-010","dimension":"Downstream publication","checkZh":"承保、签发和保单变化后，哪些系统、事件、文件和通知需要同步？","clientQuestionEn":"Which systems, events, documents, and notifications must be updated after binding, issuance, or policy change?","priority":"high","outputTypes":["dependency","potential_impact","clarification_question"],"sourceRefs":["GW-TRANSACTION","NFRA-INTERNET"]}
+      ]
+    },
+    {
+      "id": "ENDORSEMENT",
+      "nameZh": "Endorsement / Policy Change 管理",
+      "nameEn": "Endorsement and Policy Change Management",
+      "description": "保单批改、风险或保障变化、生效日期、重算、顺序冲突和批单文件。",
+      "selection": "conditional",
+      "keywords": ["endorsement", "policy change", "amendment", "批改", "批单", "变更", "MTA", "mid-term adjustment"],
+      "checks": [
+        {"id":"END-001","dimension":"Eligibility","checkZh":"是否明确哪些保单状态、产品、交易类型和用户允许发起批改？","clientQuestionEn":"Which policy states, products, transaction types, and users are eligible to initiate an endorsement?","priority":"high","outputTypes":["missing_rule","clarification_question"],"sourceRefs":["GW-TRANSACTION"]},
+        {"id":"END-002","dimension":"Change scope","checkZh":"是否明确可修改和不可修改的风险、保障、参与方、日期、财务和协议字段？","clientQuestionEn":"Which risk, coverage, party, date, financial, and agreement fields may or may not be changed?","priority":"high","outputTypes":["missing_rule","ambiguity","clarification_question"],"sourceRefs":["GW-TRANSACTION"]},
+        {"id":"END-003","dimension":"Reason and type","checkZh":"是否需要批改类型、原因、说明、附件及其对应的校验或审批？","clientQuestionEn":"Which endorsement type, reason, explanation, and supporting evidence are required, and what validation or approval depends on them?","priority":"medium","outputTypes":["missing_rule","clarification_question"],"sourceRefs":["IIBA-BAS"]},
+        {"id":"END-004","dimension":"Effective date","checkZh":"批改可选择哪些生效日期，是否允许追溯、未来生效或超出保单期间？","clientQuestionEn":"Which endorsement effective dates are allowed, including retrospective, future-dated, or dates outside the current policy term?","priority":"high","outputTypes":["missing_rule","ambiguity","clarification_question"],"sourceRefs":["GW-OOS"]},
+        {"id":"END-005","dimension":"Premium recalculation","checkZh":"哪些批改触发保费重算，如何计算日比例、最低保费、费用、税费和舍入？","clientQuestionEn":"Which endorsement changes trigger premium recalculation, and how are proration, minimum premium, fees, taxes, and rounding handled?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["GW-QUOTE"]},
+        {"id":"END-006","dimension":"Payment adjustment","checkZh":"已有收款时，追加保费、退款、冲销、分期计划和失败支付如何处理？","clientQuestionEn":"If payment already exists, how should additional premium, refund, reversal, instalments, and failed payments be handled?","priority":"high","outputTypes":["missing_rule","dependency","potential_impact","clarification_question"],"sourceRefs":["GW-TRANSACTION"]},
+        {"id":"END-007","dimension":"Acceptance and consent","checkZh":"批改或保费变化后是否需要客户、经纪人或保险人重新接受或签署？","clientQuestionEn":"Which endorsement or premium changes require renewed acceptance, consent, or signature from the customer, producer, or insurer?","priority":"high","outputTypes":["missing_rule","clarification_question"],"sourceRefs":["IAIS-ICP19"]},
+        {"id":"END-008","dimension":"Underwriting re-evaluation","checkZh":"哪些变化重新触发核保，之前的审批、覆盖或锁定是否失效？","clientQuestionEn":"Which endorsement changes re-trigger underwriting and invalidate previous approvals, overrides, or locks?","priority":"high","outputTypes":["dependency","potential_impact","clarification_question"],"sourceRefs":["GW-UW"]},
+        {"id":"END-009","dimension":"Out-of-sequence processing","checkZh":"当交易日期晚但生效日期更早时，如何检测、展示和解决顺序冲突？","clientQuestionEn":"How should out-of-sequence endorsements be detected, presented, resolved, and audited?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["GW-OOS"]},
+        {"id":"END-010","dimension":"Concurrent renewal","checkZh":"存在在途或已绑定续保时，批改是否以及如何同步到续保版本？","clientQuestionEn":"When a renewal is in progress or already bound, should endorsement changes be applied to the renewal, and how?","priority":"high","outputTypes":["missing_rule","dependency","potential_impact","clarification_question"],"sourceRefs":["GW-RENEWAL","GW-OOS"]},
+        {"id":"END-011","dimension":"Documents and notifications","checkZh":"批改完成后需要生成、替换、作废和发送哪些批单、保单文件及通知？","clientQuestionEn":"Which endorsement forms, policy documents, obsolete documents, and notifications must be generated, replaced, invalidated, or sent?","priority":"medium","outputTypes":["dependency","potential_impact","clarification_question"],"sourceRefs":["NFRA-INTERNET"]},
+        {"id":"END-012","dimension":"Withdraw and rollback","checkZh":"批改在草稿、已报价、已接受或已绑定阶段能否撤回，撤回后如何回滚？","clientQuestionEn":"At which stages may an endorsement be withdrawn, and how are data, premium, payments, documents, and downstream messages rolled back?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["GW-TRANSACTION"]}
+      ]
+    },
+    {
+      "id": "RENEWAL",
+      "nameZh": "Renewal / 续保管理",
+      "nameEn": "Renewal Management",
+      "description": "续保发起、数据带入、重新报价、核保、决定、非续保和与其他交易的交互。",
+      "selection": "conditional",
+      "keywords": ["renewal", "renew", "续保", "到期", "non-renewal", "非续保", "not taken"],
+      "checks": [
+        {"id":"REN-001","dimension":"Renewal applicability","checkZh":"需求是否明确适用于续保，还是仅适用于新保、批改或其他交易？","clientQuestionEn":"Does this requirement apply to Renewal, or only to New Business, Policy Change, or other transactions?","priority":"high","outputTypes":["ambiguity","potential_impact","clarification_question"],"sourceRefs":["ACORD-PC","GW-RENEWAL"]},
+        {"id":"REN-002","dimension":"Initiation timing","checkZh":"续保何时自动或人工发起，提前期、时区、失败重试和重复发起如何处理？","clientQuestionEn":"When is renewal initiated automatically or manually, and how are lead time, timezone, retry, and duplicate initiation handled?","priority":"high","outputTypes":["missing_rule","clarification_question"],"sourceRefs":["GW-RENEWAL"]},
+        {"id":"REN-003","dimension":"Carry-forward data","checkZh":"哪些保单、风险、保障、参与方、协议和核保数据带入续保，哪些必须重新确认？","clientQuestionEn":"Which policy, risk, coverage, party, agreement, and underwriting data are carried forward, recalculated, or re-confirmed at renewal?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["GW-RENEWAL"]},
+        {"id":"REN-004","dimension":"Product and rule changes","checkZh":"产品、费率、条款、规则或法规版本变化时，续保使用哪个版本并如何迁移？","clientQuestionEn":"Which product, rate, wording, rule, and regulatory versions apply at renewal, and how are changes migrated?","priority":"high","outputTypes":["dependency","potential_impact","clarification_question"],"sourceRefs":["GW-PRODUCT","GW-RENEWAL"]},
+        {"id":"REN-005","dimension":"Renewal risk assessment","checkZh":"续保是否重新获取风险信息、损失记录、付款记录、外部数据和核保结果？","clientQuestionEn":"Which risk, loss, payment, external-data, and underwriting information must be refreshed for renewal?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["GW-RENEWAL","GW-UW"]},
+        {"id":"REN-006","dimension":"Renewal quotation","checkZh":"续保报价的生成、版本、有效期、修改、重新报价和接受规则是否明确？","clientQuestionEn":"How are renewal quotes generated, versioned, modified, requoted, accepted, and expired?","priority":"high","outputTypes":["missing_rule","clarification_question"],"sourceRefs":["GW-RENEWAL","GW-QUOTE"]},
+        {"id":"REN-007","dimension":"Renewal underwriting","checkZh":"续保触发哪些自动规则、预续保指令、转人工和阻断条件？","clientQuestionEn":"Which automated rules, pre-renewal directions, referrals, approvals, and blocking conditions apply?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["GW-RENEWAL","GW-UW"]},
+        {"id":"REN-008","dimension":"Renewal outcome","checkZh":"是否区分续保、非续保、客户不接受、撤回、过期和人工待处理结果？","clientQuestionEn":"Which renewal outcomes are supported, such as renew, non-renew, not taken, withdrawn, expired, or pending manual review?","priority":"high","outputTypes":["missing_rule","clarification_question"],"sourceRefs":["GW-RENEWAL"]},
+        {"id":"REN-009","dimension":"Non-renewal control","checkZh":"非续保由谁决定，需要哪些原因、审批、通知期限、证据和司法辖区检查？","clientQuestionEn":"Who may decide non-renewal, and what reason, approval, notice period, evidence, and jurisdiction checks are required?","priority":"high","outputTypes":["missing_rule","dependency","potential_impact","clarification_question"],"sourceRefs":["GW-RENEWAL","IAIS-ICP19"]},
+        {"id":"REN-010","dimension":"Concurrent policy change","checkZh":"续保期间发生批改时，变化是否复制到续保，是否需要重新报价和重新审批？","clientQuestionEn":"If a policy change occurs during renewal, should it be copied to the renewal and trigger requote or re-approval?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["GW-RENEWAL","GW-OOS"]},
+        {"id":"REN-011","dimension":"Payment and documents","checkZh":"续保接受后何时收款、承保、签发并生成续保文件，失败时如何处理？","clientQuestionEn":"After renewal acceptance, when are payment, binding, issuance, and renewal documents completed, and what happens on failure?","priority":"high","outputTypes":["dependency","potential_impact","clarification_question"],"sourceRefs":["GW-RENEWAL","NFRA-INTERNET"]},
+        {"id":"REN-012","dimension":"Continuity and lapse","checkZh":"原保单到期而续保尚未完成时，保障连续性、宽限期、状态和通知如何定义？","clientQuestionEn":"If the original policy expires before renewal completes, how are continuity of cover, grace period, status, and notification handled?","priority":"high","outputTypes":["missing_rule","potential_impact","clarification_question"],"sourceRefs":["IAIS-ICP19"]}
+      ]
+    },
+    {
+      "id": "CANCELLATION_REINSTATEMENT",
+      "nameZh": "Cancellation / Reinstatement 管理",
+      "nameEn": "Cancellation and Reinstatement Management",
+      "description": "取消、退保、撤销和复效交易的资格、日期、财务及恢复规则。",
+      "selection": "conditional",
+      "keywords": ["cancel", "cancellation", "reinstate", "reinstatement", "取消", "退保", "撤销", "复效"],
+      "checks": [
+        {"id":"CAN-001","dimension":"Eligibility and initiator","checkZh":"哪些保单状态、用户和原因允许发起取消、退保或复效？","clientQuestionEn":"Which policy states, users, and reasons allow cancellation, surrender, rescission, or reinstatement?","priority":"high","outputTypes":["missing_rule","clarification_question"],"sourceRefs":["GW-TRANSACTION"]},
+        {"id":"CAN-002","dimension":"Effective date and notice","checkZh":"生效日期、追溯限制、通知期限、冷静期和司法辖区规则是否明确？","clientQuestionEn":"What effective-date, backdating, notice-period, cooling-off, and jurisdiction rules apply?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["IAIS-ICP19"]},
+        {"id":"CAN-003","dimension":"Reason and approval","checkZh":"是否要求标准原因、自由文本、证明、审批和特批？","clientQuestionEn":"Which standard reason, explanation, evidence, approval, and override are required?","priority":"medium","outputTypes":["missing_rule","clarification_question"],"sourceRefs":["IIBA-BAS"]},
+        {"id":"CAN-004","dimension":"Financial adjustment","checkZh":"如何计算短期费率、按日比例、手续费、退款、欠款和佣金冲回？","clientQuestionEn":"How are short-rate or pro-rata premium, fees, refunds, outstanding balances, and commission clawback calculated?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["GW-PRODUCER"]},
+        {"id":"CAN-005","dimension":"Reinstatement conditions","checkZh":"复效需要满足哪些付款、核保、时间、无损失声明和审批条件？","clientQuestionEn":"Which payment, underwriting, timing, no-loss declaration, and approval conditions are required for reinstatement?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["ACORD-PC"]},
+        {"id":"CAN-006","dimension":"Coverage gap","checkZh":"取消与复效之间是否存在保障中断，如何在保单、理赔和文件中体现？","clientQuestionEn":"Is there a coverage gap between cancellation and reinstatement, and how is it represented in policy, claims, and documents?","priority":"high","outputTypes":["ambiguity","potential_impact","clarification_question"],"sourceRefs":["ACORD-PC"]},
+        {"id":"CAN-007","dimension":"Concurrent transactions","checkZh":"存在批改、续保或理赔时，取消和复效交易如何协调？","clientQuestionEn":"How should cancellation and reinstatement interact with in-flight endorsements, renewals, or claims?","priority":"high","outputTypes":["dependency","potential_impact","clarification_question"],"sourceRefs":["GW-TRANSACTION","GW-OOS"]},
+        {"id":"CAN-008","dimension":"Documents and notifications","checkZh":"需要生成、作废和发送哪些通知、退款文件、取消凭证和复效凭证？","clientQuestionEn":"Which notices, refund documents, cancellation evidence, reinstatement evidence, and obsolete documents must be generated or sent?","priority":"medium","outputTypes":["dependency","clarification_question"],"sourceRefs":["NFRA-INTERNET"]}
+      ]
+    },
+    {
+      "id": "BILLING_PAYMENT_COMMISSION",
+      "nameZh": "Billing / Payment / Commission",
+      "nameEn": "Billing, Payment, and Commission",
+      "description": "应收、实收、退款、分期、税费、佣金、币种、舍入和对账。",
+      "selection": "conditional",
+      "keywords": ["billing", "payment", "invoice", "refund", "commission", "账单", "付款", "收款", "退款", "佣金", "premium", "保费"],
+      "checks": [
+        {"id":"FIN-001","dimension":"Charge trigger","checkZh":"哪些报价、承保、签发、批改、续保或取消事件创建、调整或冲销应收？","clientQuestionEn":"Which quote, bind, issue, endorsement, renewal, or cancellation events create, adjust, or reverse receivables?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["GW-TRANSACTION"]},
+        {"id":"FIN-002","dimension":"Premium difference","checkZh":"保费变化时如何计算追加应收、退款、贷项、借项和最低金额？","clientQuestionEn":"How should premium differences create additional charge, refund, credit, debit, or minimum-amount treatment?","priority":"high","outputTypes":["missing_rule","clarification_question"],"sourceRefs":["GW-QUOTE"]},
+        {"id":"FIN-003","dimension":"Collected payment","checkZh":"已有全额、部分或超额收款时，后续保费变化如何处理？","clientQuestionEn":"How should a premium change be handled when payment is already full, partial, overpaid, failed, or in dispute?","priority":"high","outputTypes":["missing_rule","potential_impact","clarification_question"],"sourceRefs":["GW-TRANSACTION"]},
+        {"id":"FIN-004","dimension":"Instalment plan","checkZh":"保费变化是否重算分期计划、到期日、首付款和未来扣款？","clientQuestionEn":"Does a premium change recalculate instalments, due dates, deposit, and future collections?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["GW-TRANSACTION"]},
+        {"id":"FIN-005","dimension":"Tax fees and rounding","checkZh":"税费、手续费、折扣、币种转换和各层级舍入规则是否明确？","clientQuestionEn":"Which tax, fee, discount, currency-conversion, and rounding rules apply at each calculation level?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["GW-QUOTE"]},
+        {"id":"FIN-006","dimension":"Refund control","checkZh":"退款方式、收款账户、审批、反欺诈、失败处理和时限是否明确？","clientQuestionEn":"What refund method, destination, approval, fraud control, failure handling, and timing apply?","priority":"high","outputTypes":["missing_rule","potential_impact","clarification_question"],"sourceRefs":["NFRA-INTERNET"]},
+        {"id":"FIN-007","dimension":"Commission","checkZh":"佣金计划、经纪人代码、计算基础、确认时点、覆盖和冲回规则是否明确？","clientQuestionEn":"Which commission plan, producer code, calculation base, recognition point, override, and clawback rules apply?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["GW-PRODUCER"]},
+        {"id":"FIN-008","dimension":"Accounting dates","checkZh":"交易日期、生效日期、过账日期、会计期间和关账后的处理是否明确？","clientQuestionEn":"How are transaction date, effective date, posting date, accounting period, and closed-period adjustments handled?","priority":"medium","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["IIBA-BAS"]},
+        {"id":"FIN-009","dimension":"Reconciliation","checkZh":"核心、计费、支付和总账之间如何核对，差异由谁处理？","clientQuestionEn":"How are policy, billing, payment, and ledger records reconciled, and who handles exceptions?","priority":"high","outputTypes":["dependency","potential_impact","clarification_question"],"sourceRefs":["IIBA-BAS"]},
+        {"id":"FIN-010","dimension":"Financial idempotency","checkZh":"重复事件、重试或回放是否会重复收费、退款或佣金？","clientQuestionEn":"How is idempotency enforced so retries or replay do not duplicate charges, refunds, or commission?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["IIBA-BAS"]}
+      ]
+    },
+    {
+      "id": "DOCUMENTS",
+      "nameZh": "Documents / Correspondence",
+      "nameEn": "Documents and Correspondence",
+      "description": "报价、保单、批单、续保及其他文件的模板、生成、发送和归档。",
+      "selection": "conditional",
+      "keywords": ["document", "form", "letter", "notice", "certificate", "文件", "表单", "通知", "凭证", "保单文件", "批单"],
+      "checks": [
+        {"id":"DOC-001","dimension":"Generation trigger","checkZh":"在哪个业务阶段和状态生成报价单、保单、批单、通知或凭证？","clientQuestionEn":"At which business stage and status should each quote, policy, endorsement, notice, or certificate be generated?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["GW-TRANSACTION"]},
+        {"id":"DOC-002","dimension":"Template applicability","checkZh":"模板是否按产品、险种、司法辖区、交易类型、渠道和语言选择？","clientQuestionEn":"How is the document template selected by product, line, jurisdiction, transaction type, channel, and language?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["GW-PRODUCT"]},
+        {"id":"DOC-003","dimension":"Template version","checkZh":"是否明确模板版本、生效日期、历史重印版本和替换规则？","clientQuestionEn":"Which template version and effective date apply, including historical reprint and supersession rules?","priority":"high","outputTypes":["missing_rule","clarification_question"],"sourceRefs":["GW-PRODUCT"]},
+        {"id":"DOC-004","dimension":"Regeneration and obsolescence","checkZh":"数据或保费变化后哪些文件重新生成，旧文件如何标记失效并防止误用？","clientQuestionEn":"Which changes regenerate documents, and how are prior documents marked obsolete and prevented from further use?","priority":"high","outputTypes":["missing_rule","potential_impact","clarification_question"],"sourceRefs":["GW-TRANSACTION"]},
+        {"id":"DOC-005","dimension":"Delivery","checkZh":"文件通过哪些渠道发送给哪些收件人，失败、退信、重发和偏好如何处理？","clientQuestionEn":"Which recipients and delivery channels apply, and how are preference, failure, bounce, and resend handled?","priority":"medium","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["NFRA-INTERNET","IAIS-ICP19"]},
+        {"id":"DOC-006","dimension":"Consent and signature","checkZh":"哪些文件需要接受、确认或电子签署，签署顺序和过期如何处理？","clientQuestionEn":"Which documents require acceptance, acknowledgement, or electronic signature, in what order, and with what expiry?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["IAIS-ICP19"]},
+        {"id":"DOC-007","dimension":"Data and calculation evidence","checkZh":"文件中的参与方、保障、限额、保费、日期和条款数据来源是否明确且可重现？","clientQuestionEn":"Which sources populate party, coverage, limit, premium, date, and wording data, and must the output be reproducible?","priority":"high","outputTypes":["dependency","potential_impact","clarification_question"],"sourceRefs":["GW-PRODUCT"]},
+        {"id":"DOC-008","dimension":"Archive and access","checkZh":"文件保留多久、谁可查看、是否防篡改，以及历史版本如何检索？","clientQuestionEn":"How long are documents retained, who may access them, how is tampering prevented, and how are historical versions retrieved?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["NFRA-INTERNET"]}
+      ]
+    },
+    {
+      "id": "CLAIMS_IMPACT",
+      "nameZh": "Claims Impact / 理赔影响",
+      "nameEn": "Claims Impact",
+      "description": "保单类需求对承保快照、在途理赔、保障判断和损失记录的潜在影响检查。",
+      "selection": "conditional",
+      "keywords": ["claim", "loss", "理赔", "赔案", "损失", "coverage determination", "保障判断"],
+      "checks": [
+        {"id":"CLM-001","dimension":"Coverage snapshot","checkZh":"理赔判断使用出险日、报案日还是当前保单版本，是否需要历史保障快照？","clientQuestionEn":"Which policy version and coverage snapshot should claims use based on loss date, report date, or current date?","priority":"high","outputTypes":["dependency","potential_impact","clarification_question"],"sourceRefs":["ACORD-PC"]},
+        {"id":"CLM-002","dimension":"In-flight claims","checkZh":"保单、参与方、风险或保障变化是否以及如何影响在途赔案？","clientQuestionEn":"Should a policy, party, risk, or coverage change affect existing claims, and if so, how?","priority":"high","outputTypes":["ambiguity","potential_impact","clarification_question"],"sourceRefs":["ACORD-PC"]},
+        {"id":"CLM-003","dimension":"Retroactive change control","checkZh":"追溯批改、取消或复效是否允许改变已发生事故的保障判断，需何种审批？","clientQuestionEn":"Can a retrospective endorsement, cancellation, or reinstatement change coverage for an existing loss, and what approval is required?","priority":"high","outputTypes":["missing_rule","potential_impact","clarification_question"],"sourceRefs":["GW-OOS","IAIS-ICP19"]},
+        {"id":"CLM-004","dimension":"Loss history","checkZh":"新增或更新的损失记录何时反馈到报价、核保和续保？","clientQuestionEn":"When and how should new or updated loss history feed quoting, underwriting, and renewal?","priority":"medium","outputTypes":["dependency","clarification_question"],"sourceRefs":["GW-QUOTE","GW-RENEWAL"]},
+        {"id":"CLM-005","dimension":"Claim notifications","checkZh":"保单交易是否需要通知理赔系统，理赔变化是否需要通知保单或续保流程？","clientQuestionEn":"Which policy transactions notify claims, and which claim changes notify policy or renewal processes?","priority":"medium","outputTypes":["dependency","potential_impact","clarification_question"],"sourceRefs":["ACORD-PC"]},
+        {"id":"CLM-006","dimension":"Audit and non-overwrite","checkZh":"保单变化是否保留理赔当时使用的数据和决定依据，避免历史被覆盖？","clientQuestionEn":"How is the policy and decision evidence used by claims preserved so later changes do not overwrite history?","priority":"high","outputTypes":["missing_rule","potential_impact","clarification_question"],"sourceRefs":["IIBA-BAS"]}
+      ]
+    },
+    {
+      "id": "INTEGRATION_DATA",
+      "nameZh": "Integration / Data",
+      "nameEn": "Integration and Data",
+      "description": "系统边界、数据归属、接口、事件、映射、时序、错误和数据质量。",
+      "selection": "always",
+      "keywords": ["API", "integration", "event", "message", "data", "接口", "集成", "事件", "数据", "同步"],
+      "checks": [
+        {"id":"INT-001","dimension":"System of record","checkZh":"是否明确每类客户、产品、报价、保单、财务和文件数据的权威系统？","clientQuestionEn":"Which system is the source of truth for customer, product, quote, policy, financial, and document data?","priority":"high","outputTypes":["dependency","clarification_question"],"sourceRefs":["IIBA-BAS"]},
+        {"id":"INT-002","dimension":"Integration contract","checkZh":"是否明确同步或异步接口、触发事件、请求响应、版本和兼容性？","clientQuestionEn":"Which synchronous APIs or asynchronous events apply, including trigger, contract version, and compatibility?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["ACORD-PC"]},
+        {"id":"INT-003","dimension":"Identifier mapping","checkZh":"跨系统客户、报价、保单、交易、支付和文件标识如何映射与追踪？","clientQuestionEn":"How are customer, quote, policy, transaction, payment, and document identifiers mapped and traced across systems?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["ACORD-PC"]},
+        {"id":"INT-004","dimension":"Idempotency and duplicate events","checkZh":"是否定义重复请求、重复事件、重试和回放的幂等处理？","clientQuestionEn":"How are duplicate requests, duplicate events, retries, and replay made idempotent?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["IIBA-BAS"]},
+        {"id":"INT-005","dimension":"Ordering and concurrency","checkZh":"乱序、并发、延迟和旧版本消息如何检测和处理？","clientQuestionEn":"How are out-of-order, concurrent, delayed, and stale-version messages detected and handled?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["GW-OOS"]},
+        {"id":"INT-006","dimension":"Failure recovery","checkZh":"接口失败、部分成功、超时和下游不可用时，重试、补偿、死信和人工修复如何处理？","clientQuestionEn":"How are retry, compensation, dead-letter handling, reconciliation, and manual repair managed for failure or partial success?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["IIBA-BAS"]},
+        {"id":"INT-007","dimension":"Code and reference data mapping","checkZh":"产品、险种、保障、状态、原因、国家、币种等代码如何映射和版本化？","clientQuestionEn":"How are product, LOB, coverage, status, reason, country, currency, and other reference codes mapped and versioned?","priority":"medium","outputTypes":["dependency","clarification_question"],"sourceRefs":["ACORD-PC","GW-PRODUCT"]},
+        {"id":"INT-008","dimension":"Data quality and observability","checkZh":"是否定义完整性、准确性、及时性、一致性校验，以及监控、告警和对账？","clientQuestionEn":"Which completeness, accuracy, timeliness, consistency, monitoring, alerting, and reconciliation controls are required?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["IIBA-BAS"]}
+      ]
+    },
+    {
+      "id": "SECURITY_AUDIT_COMPLIANCE",
+      "nameZh": "Security / Audit / Compliance",
+      "nameEn": "Security, Audit, and Compliance",
+      "description": "访问控制、职责分离、隐私、安全、审计、留存和司法辖区适用性。",
+      "selection": "always",
+      "keywords": ["permission", "role", "audit", "privacy", "security", "权限", "审计", "隐私", "安全", "监管", "合规"],
+      "checks": [
+        {"id":"SEC-001","dimension":"Role-based access","checkZh":"是否明确谁能查看、创建、修改、报价、审批、承保、签发、取消和导出？","clientQuestionEn":"Which roles may view, create, edit, quote, approve, bind, issue, cancel, and export this information?","priority":"high","outputTypes":["missing_rule","potential_impact","clarification_question"],"sourceRefs":["GW-PRODUCER"]},
+        {"id":"SEC-002","dimension":"Segregation of duties","checkZh":"发起、审批、特批、付款和退款是否需要职责分离或双人复核？","clientQuestionEn":"Which initiation, approval, override, payment, and refund actions require segregation of duties or dual control?","priority":"high","outputTypes":["missing_rule","potential_impact","clarification_question"],"sourceRefs":["IAIS-ICP19"]},
+        {"id":"SEC-003","dimension":"Data visibility","checkZh":"个人信息、健康信息、财务信息和内部核保意见对哪些角色可见，是否需要脱敏？","clientQuestionEn":"Which roles may view personal, health, financial, and internal underwriting data, and what masking is required?","priority":"high","outputTypes":["missing_rule","potential_impact","clarification_question"],"sourceRefs":["IAIS-ICP19","NFRA-INTERNET"]},
+        {"id":"SEC-004","dimension":"Audit trail","checkZh":"是否记录操作者、时间、前后值、原因、来源渠道、审批和关联交易？","clientQuestionEn":"Must the audit trail capture actor, timestamp, before and after values, reason, source channel, approval, and related transaction?","priority":"high","outputTypes":["missing_rule","clarification_question"],"sourceRefs":["NFRA-INTERNET"]},
+        {"id":"SEC-005","dimension":"Override control","checkZh":"人工覆盖是否要求权限、原因、证据、时限、通知和复核？","clientQuestionEn":"What permission, reason, evidence, duration, notification, and review controls apply to manual overrides?","priority":"high","outputTypes":["missing_rule","clarification_question"],"sourceRefs":["IAIS-ICP19"]},
+        {"id":"SEC-006","dimension":"Retention and deletion","checkZh":"业务数据、文件、日志和个人信息的保留、归档、冻结和删除要求是否明确？","clientQuestionEn":"What retention, archive, legal hold, and deletion rules apply to business data, documents, logs, and personal information?","priority":"high","outputTypes":["missing_rule","dependency","clarification_question"],"sourceRefs":["NFRA-INTERNET"]},
+        {"id":"SEC-007","dimension":"External and intermediary access","checkZh":"客户、经纪人、代理人和合作方的访问范围、授权、撤权和会话安全是否明确？","clientQuestionEn":"How are access scope, authorisation, revocation, and session security controlled for customers, producers, intermediaries, and partners?","priority":"high","outputTypes":["missing_rule","potential_impact","clarification_question"],"sourceRefs":["GW-PRODUCER","IAIS-ICP19"]},
+        {"id":"SEC-008","dimension":"Jurisdiction and disclosure","checkZh":"是否明确适用司法辖区、客户告知、同意、可回溯和公平对待要求？","clientQuestionEn":"Which jurisdiction, disclosure, consent, traceability, and fair-treatment requirements apply?","priority":"high","outputTypes":["dependency","potential_impact","clarification_question"],"sourceRefs":["IAIS-ICP19","NFRA-INTERNET"]}
+      ]
+    }
+  ]
+}

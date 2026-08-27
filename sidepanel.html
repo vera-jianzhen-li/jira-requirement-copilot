@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jira Requirement Copilot</title>
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="panel-header">
+      <div class="header-row">
+        <div class="brand-mark" aria-hidden="true">JC</div>
+        <div class="brand-copy">
+          <div class="brand-name">Jira Requirement Copilot <span class="v1-tag">V0.1</span></div>
+          <p>Free local insurance checks. Optional AI analysis.</p>
+        </div>
+        <div class="header-actions">
+          <button class="icon-button" id="settingsButton" type="button" title="Settings" aria-label="Open settings">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.6v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"></path></svg>
+          </button>
+          <button class="icon-button" id="closeButton" type="button" title="Close" aria-label="Close panel">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"></path></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="jira-context" id="jiraContext">
+        <div class="context-topline">
+          <span class="issue-key" id="issueKey">Checking Jira…</span>
+          <span class="issue-type">Requirement</span>
+        </div>
+        <div class="context-summary" id="issueSummary">Reading the active browser tab.</div>
+        <div class="context-status" id="contextStatus">
+          <span class="status-dot"></span>
+          <span id="contextStatusText">Detecting Jira content</span>
+          <button class="text-button context-refresh" id="refreshButton" type="button">Refresh</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="global-alert hidden" id="globalAlert" role="alert">
+      <span id="globalAlertText"></span>
+      <button type="button" id="dismissAlert" aria-label="Dismiss alert">×</button>
+    </div>
+
+    <main class="panel-body">
+      <section class="view panel-pad" id="initialView" aria-label="Initial analysis view">
+        <div class="context-settings">
+          <div class="field-grid single-field-grid">
+            <label class="field">
+              <span>Industry</span>
+              <span class="select-wrap">
+                <select id="industrySelect">
+                  <option>General</option>
+                  <option selected>Insurance</option>
+                  <option>Banking</option>
+                </select>
+              </span>
+            </label>
+          </div>
+          <div class="review-scope-card" id="jiraReviewScope">
+            <div class="review-scope-head">
+              <div>
+                <span class="review-scope-label">Review scope</span>
+                <b id="jiraScopeSummary">Auto-detect from Jira</b>
+              </div>
+              <button class="mini-button" id="jiraAdjustModulesButton" type="button" aria-expanded="false">Choose manually</button>
+            </div>
+            <p>General checks always run. Related insurance modules are detected automatically unless you choose a manual scope.</p>
+            <div class="module-picker hidden" id="jiraModulePicker">
+              <div class="module-picker-head">
+                <span id="jiraModulePickerHint">Automatically detected modules</span>
+                <button class="text-button hidden" id="jiraAutoScopeButton" type="button">Restore automatic</button>
+              </div>
+              <div class="module-options" id="jiraModuleOptions"></div>
+            </div>
+          </div>
+          <div class="free-mode-banner">
+            <span class="free-mode-icon" aria-hidden="true">✓</span>
+            <span><b>Free local insurance check</b><small>144 built-in checks · No API Key · Jira content stays in this browser</small></span>
+          </div>
+          <div class="context-hint">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 8h.01"></path></svg>
+            <span>The local checklist uses insurance knowledge only to raise hypotheses and questions. It never turns them into confirmed client rules.</span>
+          </div>
+        </div>
+
+        <div class="analysis-mode-actions">
+          <button class="button primary grow mode-button" id="analyzeButton" type="button">
+            <span>Run Free Local Check</span><small>No API cost</small>
+          </button>
+          <button class="button secondary grow mode-button" id="aiAnalyzeButton" type="button">
+            <span>AI Deep Analysis</span><small>Optional · Uses your API</small>
+          </button>
+        </div>
+        <button class="button quiet full-width" id="manualButton" type="button">Paste Requirement Manually</button>
+
+        <div class="divider"></div>
+        <p class="section-label">What you’ll get</p>
+        <ol class="preview-list">
+          <li><span>1</span><div><b>Local Review Summary</b><small>匹配模块、检查数量与零费用说明</small></div></li>
+          <li><span>2</span><div><b>Domain Terms</b><small>本地词表识别的保险术语</small></div></li>
+          <li><span>3</span><div><b>Requirement Coverage</b><small>角色、交易范围与已识别信息</small></div></li>
+          <li><span>4</span><div><b>Gaps &amp; Potential Impact</b><small>缺失规则、歧义、依赖与潜在影响</small></div></li>
+          <li><span>5</span><div><b>Questions to Clarify</b><small>预录、可直接询问客户的英文问题</small></div></li>
+        </ol>
+        <div class="context-hint initial-safety-note">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 9v4M12 17h.01"></path><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path></svg>
+          <span>Local findings are review prompts, not confirmed business rules. AI is optional and is called only when you explicitly choose AI Deep Analysis.</span>
+        </div>
+      </section>
+
+      <section class="view panel-pad hidden" id="manualView" aria-label="Manual requirement input">
+        <div class="manual-heading">
+          <button class="back-button" id="manualBackButton" type="button" aria-label="Back">←</button>
+          <div>
+            <h2>Paste Requirement Manually</h2>
+            <p>Use this when Jira content cannot be detected.</p>
+          </div>
+        </div>
+
+        <div class="manual-warning">
+          <span aria-hidden="true">!</span>
+          <p>Could not read the Jira issue automatically. This can happen with custom fields, restricted issues or unsupported Jira layouts. Paste the requirement below to continue.</p>
+        </div>
+
+        <label class="input-field">
+          <span>Summary <em>Required</em></span>
+          <input id="manualSummary" maxlength="2000" placeholder="Paste the Jira summary">
+          <small id="summaryCount">0 / 2000</small>
+        </label>
+        <label class="input-field">
+          <span>Description <em>Required</em></span>
+          <textarea id="manualDescription" maxlength="80000" rows="11" placeholder="Paste the Jira description and acceptance criteria"></textarea>
+          <small id="descriptionCount">0 characters</small>
+        </label>
+
+        <div class="divider"></div>
+        <p class="section-label">Context setting</p>
+        <div class="field-grid compact-grid single-field-grid">
+          <label class="field">
+            <span>Industry</span>
+            <span class="select-wrap"><select id="manualIndustrySelect">
+              <option>General</option><option selected>Insurance</option><option>Banking</option>
+            </select></span>
+          </label>
+        </div>
+        <div class="review-scope-card compact-scope-card" id="manualReviewScope">
+          <div class="review-scope-head">
+            <div>
+              <span class="review-scope-label">Review scope</span>
+              <b id="manualScopeSummary">Auto-detect from pasted requirement</b>
+            </div>
+            <button class="mini-button" id="manualAdjustModulesButton" type="button" aria-expanded="false">Choose manually</button>
+          </div>
+          <p>General checks always run. Related insurance modules are detected automatically unless you choose a manual scope.</p>
+          <div class="module-picker hidden" id="manualModulePicker">
+            <div class="module-picker-head">
+              <span id="manualModulePickerHint">Automatically detected modules</span>
+              <button class="text-button hidden" id="manualAutoScopeButton" type="button">Restore automatic</button>
+            </div>
+            <div class="module-options" id="manualModuleOptions"></div>
+          </div>
+        </div>
+
+        <div class="manual-actions stacked-actions">
+          <button class="button secondary" id="manualCancelButton" type="button">Cancel</button>
+          <button class="button primary grow" id="manualAnalyzeButton" type="button">Run Free Local Check</button>
+          <button class="button secondary grow" id="manualAiAnalyzeButton" type="button">AI Deep Analysis</button>
+        </div>
+        <p class="manual-privacy-note">Local check: content stays in your browser. AI Deep Analysis: content is sent only to the API provider you configured.</p>
+      </section>
+
+      <section class="view analyzing-view hidden" id="analyzingView" aria-label="Analyzing requirement" aria-live="polite">
+        <div class="spinner" aria-hidden="true"></div>
+        <h2 id="analyzingTitle">Running AI deep analysis…</h2>
+        <p id="analyzingContext">Reading only the supplied Jira content and selected context.</p>
+        <div class="progress-track"><span id="progressBar"></span></div>
+        <ol class="analysis-steps" id="analysisSteps">
+          <li><span></span>Understanding business intent</li>
+          <li><span></span>Identifying domain terminology</li>
+          <li><span></span>Checking requirement completeness</li>
+          <li><span></span>Detecting ambiguity and potential impact</li>
+          <li><span></span>Generating clarification questions</li>
+        </ol>
+        <button class="text-button cancel-analysis" id="cancelAnalysisButton" type="button">Cancel</button>
+      </section>
+
+      <section class="view result-view hidden" id="resultView" aria-label="Requirement analysis result">
+        <nav class="result-nav" id="resultNav" aria-label="Analysis sections">
+          <button class="active" type="button" data-target="understandSection">Understand</button>
+          <button type="button" data-target="termsSection">Terms <span class="nav-count purple" id="termsNavCount">0</span></button>
+          <button type="button" data-target="breakdownSection">Breakdown</button>
+          <button type="button" data-target="gapsSection">Gaps &amp; Impact <span class="nav-count" id="gapsNavCount">0</span></button>
+          <button type="button" data-target="questionsSection">Questions <span class="nav-count" id="questionsNavCount">0</span></button>
+        </nav>
+        <div class="result-meta" id="resultMeta"></div>
+        <div class="result-content" id="resultContent"></div>
+      </section>
+    </main>
+
+    <footer class="result-footer hidden" id="resultFooter">
+      <div class="footer-actions">
+        <button class="button secondary" id="analysisOptionsButton" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+          Analysis Options
+        </button>
+        <button class="button secondary grow hidden" id="aiEnhanceButton" type="button">AI Deep Analysis</button>
+        <button class="button primary grow" id="copyAnalysisButton" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg>
+          Copy Analysis
+        </button>
+      </div>
+      <p id="resultDisclaimer">Always validate findings against the source Jira and the existing system.</p>
+    </footer>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <span class="toast-check">✓</span><span id="toastText">Copied</span>
+  </div>
+
+  <script src="local-analysis.js"></script>
+  <script src="sidepanel.js"></script>
+</body>
+</html>
